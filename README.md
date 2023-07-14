@@ -15,34 +15,36 @@ Make sure to install Anaconda and git first.
 
 1. Create a new Conda environment:
 
-   ```shell
-   conda create -n podcast-summarizer python=3.9
-   conda activate podcast-summarizer
+```
+conda create -n podcast-summarizer python=3.9
+conda activate podcast-summarizer
+```
 
 2. Clone the repository:
+
 ```
 git clone https://github.com/your-username/podcast-summarizer.git
 cd podcast-summarizer
-
 ```
 
 3. Install the required dependencies:
+
 ```
 pip install -r requirements.txt
-
 ```
 
 ## Usage
 
 1. Run the Streamlit app:
+
 ```
 streamlit run app.py
-
 ```
 
 2. Open your web browser and navigate to http://localhost:8501 to access the Podcast Summarizer interface.
 
 3. Enter the podcast URL and click the "Extract Text" button to initiate the text extraction process. The extracted text will be displayed on the web interface.
+
 
 ## Disclaimer
 
