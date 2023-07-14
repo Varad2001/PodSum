@@ -2,4 +2,4 @@ openai-whisper
 streamlit
 BeautifulSoup4
 pytube
-
+ffmpeg
