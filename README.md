@@ -18,6 +18,7 @@ Make sure to install Anaconda and git first.
 ```
 conda create -n podcast-summarizer python=3.9
 conda activate podcast-summarizer
+conda install pip
 ```
 
 2. Clone the repository:
