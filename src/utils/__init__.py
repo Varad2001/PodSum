@@ -41,9 +41,9 @@ def extract_yt_video_id(url):
 
 def format_yt_podcast_url(url : str):
     if 'featured' in url :
-        url =  url.replace('featured', '')
+        url =  url.replace('/featured', '')
     elif 'videos' in url:
-        url = url.replace('videos', '')
+        url = url.replace('/videos', '')
     else :
         pass
     name = url.split('.com')[1]
@@ -53,8 +53,10 @@ def format_yt_podcast_url(url : str):
         name = name.replace('/@', '')
     else :
         pass
-
-    return url, name[:-1]
+    
+    if name[-1] == '/':
+        name = name[:-1]
+    return url, name
 
 
 def is_valid_channel(channel_url):
@@ -85,7 +87,7 @@ def is_podcast_url_valid(url):
     
     if not is_valid_channel(url):
         return False, "Youtube podcast not found."
-    
+
     return True, "success"
         
 

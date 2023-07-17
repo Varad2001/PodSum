@@ -38,7 +38,7 @@ def insert_episodes_to_db(mongo_client, episodes:list):
 
         coll.insert_many(episodes)
 
-        logging.info(f"{len(episodes)} inserted successfully.")
+        logging.info(f"{len(episodes)} number of episodes inserted successfully.")
         return True
     except Exception as e:
         logging.exception(e)
