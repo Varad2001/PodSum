@@ -1,40 +1,29 @@
 import os
 import streamlit as st
-from src.utils import extract_domain_name
-from src.web_scraping import get_podcast_from_yt, get_podcast_from_listennote
-from src.audio_conversion import get_text_from_audio
-import src.config as config
+from src.utils import extract_domain_name, is_valid_channel, is_podcast_url_valid
+from src.entity.episode import YoutubeEpisode
 from src.logger import logging
+from src.components.podcast_ops import save_podcast_data
 
-
-def text_extraction(url):
-    domain = extract_domain_name(url)
-
-    if 'youtube' in domain:
-        podcast_path = get_podcast_from_yt(url, config.PODCAST_AUDIO_DIR)
-    elif 'listennotes' in domain:
-        podcast_path = get_podcast_from_listennote(url, config.PODCAST_AUDIO_DIR)
+def text_extraction(url, mongodb_url, limit=None):
+    url_valid, msg = is_podcast_url_valid(url)
+    if not url_valid:
+        return msg
+    
+    success = save_podcast_data(url=url, mongodb_url=mongodb_url,limit=limit)
+    if success:
+        return "Success. Details saved to database."
     else:
-        msg = "Please enter URLs from YouTube or Listen Notes only."
-        logging.info(f"\n{msg}")
-        return msg
-
-    if not podcast_path:
-        msg = "No podcasts found."
-        logging.info(f"\n{msg}")
-        return msg
-
-    text = get_text_from_audio(podcast_path)
-
-    if text:
-        return text
+        return "Failed. Please check logs."
 
 
 # Set up the Streamlit interface
 st.title("Audio Text Extraction")
 
-url_input = st.text_input("Enter the podcast URL:")
+podcast_url = st.text_input("Enter the podcast URL:")
+mongodb_url = st.text_input("Enter the Mongodb URL:", type='password')
+limit = int(st.number_input("Enter the number of episodes to save:", min_value=1))
 if st.button("Extract Text"):
-    result = text_extraction(url_input)
+    result = text_extraction(podcast_url, mongodb_url, limit)
     st.write(result)
 
