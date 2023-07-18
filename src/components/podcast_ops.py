@@ -16,6 +16,7 @@ def save_podcast_data(client, url,  limit=env_var.MAX_NEW_EPISODES):
         logging.exception(e)
         return 0, f"Error searching podcast in database."
 
+    msg = ''
 
     # if the podcast is not present in the database
     if not pod: 
@@ -25,7 +26,13 @@ def save_podcast_data(client, url,  limit=env_var.MAX_NEW_EPISODES):
         podcast = Podcast(url)
         episodes = podcast.get_episodes_details(limit=limit)
         for episode in episodes :
-            _ = episode.get_transcript()
+            tr = episode.get_transcript()
+
+            # if getting transcript fails, skip this episode
+            if not tr:
+                msg = f"Encounted problem with {episode.episode_url}"
+                episodes.remove(episode)
+
 
         episodes_data = [epi.to_dict() for epi in episodes]
         episode_urls = [epi.episode_url for epi in episodes]
@@ -37,7 +44,7 @@ def save_podcast_data(client, url,  limit=env_var.MAX_NEW_EPISODES):
                 'name' : podcast.name
             }
             ):
-            msg = f"Podcast {podcast.name} and {limit} episodes saved to database."
+            msg += f"{podcast.name} is a new podcast. Last {len(episode_urls)} episodes saved to database."
             logging.info(msg)
             return 1, msg
         else:
@@ -58,7 +65,15 @@ def save_podcast_data(client, url,  limit=env_var.MAX_NEW_EPISODES):
 
         for episode in episodes:
             if not episode.episode_url in episode_urls :
-                _ = episode.get_transcript()
+                tr = episode.get_transcript()
+
+                if not tr:
+                    msg = f"Encounted problem with {episode.episode_url}"
+                    continue
+                if tr == 'NA':
+                    msg = f"No transcripts were found for any of the requested language codes: {env_var.LANGUAGES}"
+                    continue
+
                 results.append(episode.to_dict())
                 episode_urls.append(episode.episode_url)
 

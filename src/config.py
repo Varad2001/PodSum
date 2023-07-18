@@ -30,6 +30,10 @@ class EnvironmentVariables:
 
     AVAILABLE_PLATFORMS = ['youtube', 'listennotes']
 
+    SPLIT_PART_DURATION = 70   # IN MINUTES
+
+    LANGUAGES = ('en', 'en-US')
+
 env_var = EnvironmentVariables()
 mongo_client = pymongo.MongoClient(os.environ.get('MONGODB_URL'))
 

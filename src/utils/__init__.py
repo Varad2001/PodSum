@@ -91,3 +91,25 @@ def is_podcast_url_valid(url):
     return True, "success"
         
 
+def split_transcripts(transcripts, duration_limit_in_sec):
+
+    transcript_parts = []
+    current_part = 1
+    current_transcript = ''
+
+    for transcript in transcripts:
+        text = transcript['text'].replace('\n', ' ')
+
+        if (transcript['start'] + transcript['duration']) > current_part * duration_limit_in_sec:
+            print(f"Getting part number  : {current_part} ")
+            transcript_parts.append(current_transcript)
+            current_transcript = text
+            current_part += 1
+
+        else:
+            current_transcript = ' '.join([current_transcript, text])
+
+    print(f"Getting part number  : {current_part} ")
+    transcript_parts.append(current_transcript)   
+
+    return transcript_parts

@@ -24,14 +24,14 @@ def text_extraction(urls, mongodb_url, limit=None):
 
         url_valid, msg = is_podcast_url_valid(url)
         if not url_valid:
-            result = '\n'.join([result, f"{url} : ", msg])
+            result =  result + '\n' + f"{url} : {msg}" 
             continue
         
         success, msg = save_podcast_data(client=client, url=url, limit=limit)
         if success:
-            result = '\n'.join([result, f"{url} : ", msg])
+            result =  result + '\n' + f"{url} : {msg}" 
         else:
-            result = '\n'.join([result, f"{url} : ", msg])
+            result =  result + '\n' + f"{url} : {msg}" 
 
     return result
 
@@ -40,16 +40,28 @@ def text_extraction(urls, mongodb_url, limit=None):
 st.title("Audio Text Extraction")
 
 # Input channel URLs
-channel_urls = st.text_area("Enter Youtube Channel URLs (one per line)", "", height=200)
+
+# Youtube
+yt_channel_urls = st.text_area("Enter Youtube Channel URLs (one per line)", "", height=200)
+
+# Listennotes
+#ln_channel_urls = st.text_area("Enter Listennotes Channel URLs (one per line)", "", height=200)
 
 # Convert the input into a list of URLs
-channel_url_list = channel_urls.split("\n")
+yt_channel_url_list = yt_channel_urls.split("\n")
+#ln_channel_url_list = ln_channel_urls.split("\n")
 
-mongodb_url = st.text_input("Enter the Mongodb URL:", type='password', value=os.environ.get("MONGODB_URL"))
+#channel_urls = {
+#    'Youtube' : yt_channel_url_list,
+#    'Listennotes' : ln_channel_url_list
+#}
+
+mongodb_url = st.text_input("Enter the Mongodb URL:", type='password')
 
 limit = int(st.number_input("Enter the number of episodes to save:", min_value=1))
 
 if st.button("Extract Text"):
-    result = text_extraction(channel_url_list, mongodb_url, limit)
+        
+    result = text_extraction(yt_channel_url_list, mongodb_url, limit)
     st.write(result)
 

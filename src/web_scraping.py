@@ -5,7 +5,7 @@ from pathlib import Path
 from bs4 import BeautifulSoup
 from pytube import YouTube
 from src.logger import logging
-import src.config as config
+from src.config import env_var
 
 
 def get_podcast_from_yt(url: str, save_file_dir: Union[str, Path]) -> Optional[str] :
@@ -48,7 +48,7 @@ def get_podcast_from_yt(url: str, save_file_dir: Union[str, Path]) -> Optional[s
         return None
     
 
-def get_audio_url(url : str, headers=config.headers) -> Optional[Tuple[str, str]] :
+def get_audio_url(url : str, headers=env_var.headers) -> Optional[Tuple[str, str]] :
     """
     Retrieves the audio URL and title from a webpage.
 
@@ -82,7 +82,6 @@ def get_audio_url(url : str, headers=config.headers) -> Optional[Tuple[str, str]
             return data_audio, data_title
         else :
             logging.info("\nAudio source not found.")
-            logging.info(f"{soup.prettify()}")
             return None
     except Exception as e:
         logging.exception(e)
@@ -90,7 +89,7 @@ def get_audio_url(url : str, headers=config.headers) -> Optional[Tuple[str, str]
     
 
 def download_audio(url : str, save_file_dir : Union[str, Path], 
-                   filename, headers=config.headers) -> Optional[str] :
+                   filename, headers=env_var.headers) -> Optional[str] :
     """
     Downloads an audio file from the specified URL and saves it to the given directory.
 
