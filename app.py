@@ -4,6 +4,11 @@ import requests
 app = Flask(__name__)
 
 
+@app.route("/")
+def home():
+    return "<p>Hello</p>"
+
+
 @app.route("/test", methods=['POST'])
 def test():
     if request.method == 'POST':
