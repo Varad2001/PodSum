@@ -1,5 +1,4 @@
 from src.entity.podcast import Podcast
-from src.entity.episode import YoutubeEpisode
 import src.utils as utils
 from src.config import env_var
 from src.components import db_ops

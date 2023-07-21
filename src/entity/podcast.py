@@ -7,7 +7,6 @@ from pytube import YouTube
 from youtube_transcript_api import YouTubeTranscriptApi
 import src.utils as utils
 from src.logger import logging
-import src.config as config
 from src.entity.episode import YoutubeEpisode
 import scrapetube
 
