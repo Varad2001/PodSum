@@ -10,7 +10,6 @@ from src.components.db_ops import connect_db
 from src.logger import logging
 
 app = Flask(__name__)
-root_url = request.root_url
 
 
 @app.route("/")
