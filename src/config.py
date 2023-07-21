@@ -69,6 +69,7 @@ class EnvironmentVariables:
 
 env_var = EnvironmentVariables()
 env_var.get_config_from_db(os.environ.get('MONGODB_URL'))
+print(f"Config updated from database. Limit : {env_var.MAX_NEW_EPISODES}")
 #get_settings_from_mongodb(os.environ.get("MONGODB_URL"))
 #mongo_client = pymongo.MongoClient(os.environ.get('MONGODB_URL'))
 
