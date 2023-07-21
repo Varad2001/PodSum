@@ -40,7 +40,7 @@ def get_all_podcasts(client):
 
 def insert_episodes_to_db(mongo_client, episodes:list):
 
-    logging.info(f"Inserting new episodes to database....")
+    logging.debug(f"Inserting new episodes to database....")
 
     try :
         db = mongo_client[env_var.DB_NAME]
@@ -48,7 +48,7 @@ def insert_episodes_to_db(mongo_client, episodes:list):
 
         coll.insert_many(episodes)
 
-        logging.info(f"{len(episodes)} number of episodes inserted successfully.")
+        logging.debug(f"{len(episodes)} number of episodes inserted successfully.")
         return True
     except Exception as e:
         logging.exception(e)
@@ -66,7 +66,7 @@ def insert_podcast_info_to_db(mongo_client, podcast):
         coll.insert_one(podcast)
 
         logging.debug(f"Successful.")
-        logging.info(f"Successfully inserted the new episodes to the database.")
+        logging.debug(f"Successfully inserted the new episodes to the database.")
         return True
     except Exception as e:
         logging.exception(e)

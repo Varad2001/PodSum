@@ -106,12 +106,14 @@ def main():
                 st.write(log)
     
     elif option == "Add Channel Name":
-        channel_url = st.text_input("Enter Channel URL")
+        channel_urls = st.text_area("Enter Channel URL", height=200)
         if st.button("Add Channel Name"):
-            logs = podcast_ops.add_podcast_to_db(client=client,
-                                                 url=channel_url)
-            st.write("Channel name added successfully!")
-            st.write(logs[1])
+            channel_urls = [url.strip() for url in channel_urls.splitlines()]
+            for channel_url in channel_urls:
+                logs = podcast_ops.add_podcast_to_db(client=client,
+                                                    url=channel_url)
+                st.write("Channel name added successfully!")
+                st.write(logs[1])
 
     elif option == "See Podcasts":
         see_podcasts(client)
