@@ -47,7 +47,7 @@ def schedule_job():
     schedule.every(60).seconds.do(job)
 
     i = 0
-    while i < 5:
+    while i < 50:
         print("Checking pending jobs...")
         i+=1
         schedule.run_pending()
