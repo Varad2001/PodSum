@@ -21,7 +21,7 @@ class Podcast:
 
     def get_episodes_details(self, limit):
 
-        logging.info(f"Getting {limit} episodes for : {self.url}")
+        logging.debug(f"Getting {limit} episodes for : {self.url}")
 
         try :
             videos = scrapetube.get_channel(channel_url=self.url, limit=limit, 
@@ -35,7 +35,7 @@ class Podcast:
 
                 episodes.append(episode)
 
-            logging.info(f"Extraction successful. ")
+            logging.debug(f"Extraction successful. ")
             return episodes
         except Exception as e:
             logging.exception(e)

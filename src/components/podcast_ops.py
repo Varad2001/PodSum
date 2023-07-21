@@ -1,7 +1,7 @@
 from src.entity.podcast import Podcast
 from src.entity.episode import YoutubeEpisode
 import src.utils as utils
-from src.config import env_var, mongo_client
+from src.config import env_var
 from src.components import db_ops
 from src.logger import logging
 
@@ -15,6 +15,7 @@ def update_one_podcast(client, old_podcast, limit=env_var.MAX_NEW_EPISODES):
     new_episodes = updated_podcast.get_episodes_details(limit=limit)
     
     new_videos_found = False
+
     results = []
 
     for episode in new_episodes:
@@ -24,9 +25,11 @@ def update_one_podcast(client, old_podcast, limit=env_var.MAX_NEW_EPISODES):
 
             if not tr:
                 msg = f"Encounted problem with {episode.episode_url}"
+                logging.info(msg)
                 continue
             if tr == 'NA':
                 msg = f"No transcripts were found for any of the requested language codes: {env_var.LANGUAGES}"
+                logging.info(msg)
                 continue
 
             results.append(episode.to_dict())
@@ -40,7 +43,7 @@ def update_one_podcast(client, old_podcast, limit=env_var.MAX_NEW_EPISODES):
         return 1, msg
 
     if db_ops.insert_episodes_to_db(client, results) and db_ops.update_podcast_info(client,updated_podcast.url, current_episode_urls) :
-        msg = f"{updated_podcast.name} : New episodes saved successfully."
+        msg = f"{updated_podcast.name} : {len(results)} new episodes saved successfully."
         logging.info(msg)
         return 1, msg
     else :

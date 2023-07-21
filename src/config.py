@@ -4,8 +4,40 @@ from dotenv import load_dotenv
 import pymongo
 
 
+
+def get_settings_from_mongodb(mongodb_url):
+    client = pymongo.MongoClient(mongodb_url)
+    db = client['PODSUM']
+    config_collection = db['CONFIG']
+
+    try:
+        # Retrieve all documents from the 'config' collection
+        config_documents = config_collection.find()
+
+        # Update env_var with the settings from the retrieved documents
+        for document in config_documents:
+            for setting_name, setting_value in document.items():
+                #setting_name = document['setting_name']
+                #setting_value = document['setting_value']
+                
+                # Update env_var with the retrieved setting value
+                setattr(env_var, setting_name, setting_value)
+
+    except Exception as e:
+        # If there's an error while fetching settings from the database,
+        # use the locally defined settings instead
+        print(f"Error fetching settings from MongoDB: {e}")
+
+    finally:
+        client.close()
+
+
 class EnvironmentVariables:
     load_dotenv()
+
+
+    def get_config_from_db(self,url):
+        get_settings_from_mongodb(url)
 
     # Define headers for sending requests to urls
     headers = {
@@ -34,6 +66,9 @@ class EnvironmentVariables:
 
     LANGUAGES = ('en', 'en-US')
 
+
 env_var = EnvironmentVariables()
-mongo_client = pymongo.MongoClient(os.environ.get('MONGODB_URL'))
+env_var.get_config_from_db(os.environ.get('MONGODB_URL'))
+#get_settings_from_mongodb(os.environ.get("MONGODB_URL"))
+#mongo_client = pymongo.MongoClient(os.environ.get('MONGODB_URL'))
 

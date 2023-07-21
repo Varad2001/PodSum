@@ -5,9 +5,9 @@ from pathlib import Path
 from bs4 import BeautifulSoup
 from pytube import YouTube
 from youtube_transcript_api import YouTubeTranscriptApi
-from youtube_transcript_api._errors import NoTranscriptFound
+from youtube_transcript_api._errors import NoTranscriptFound, TranscriptsDisabled
 from src.web_scraping import get_podcast_from_listennote
-from src.audio_conversion import get_text_from_audio
+#from src.audio_conversion import get_text_from_audio
 import src.utils as utils
 from src.logger import logging
 from src.config import env_var
@@ -32,7 +32,7 @@ class YoutubeEpisode(Episode):
     
     def get_transcript(self):
 
-        logging.info(f"Getting transcripts for episode : {self.episode_url}")
+        logging.debug(f"Getting transcripts for episode : {self.episode_url}")
 
         try :
             id = utils.extract_yt_video_id(self.episode_url)
@@ -43,11 +43,13 @@ class YoutubeEpisode(Episode):
             try :
                 transcripts = YouTubeTranscriptApi.get_transcript(id, env_var.LANGUAGES)
             except NoTranscriptFound as e:
-                logging.exception(e)
                 return "NA"
+            except TranscriptsDisabled as e:
+                return "NA"
+                
             result = utils.split_transcripts(transcripts, env_var.SPLIT_PART_DURATION * 60)
             
-            logging.info("Getting transcripts Successful.")
+            logging.debug("Getting transcripts Successful.")
             
             self.transcript = result
             return result

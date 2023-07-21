@@ -32,7 +32,7 @@ def extract_yt_video_id(url):
         video = query["v"][0]
         return video
     except KeyError as e:
-        logging.info(f"Id not found. Invalid url : {url}")
+        logging.debug(f"Id not found. Invalid url : {url}")
         return None
     except Exception as e:
         logging.exception(e)
@@ -101,7 +101,7 @@ def split_transcripts(transcripts, duration_limit_in_sec):
         text = transcript['text'].replace('\n', ' ')
 
         if (transcript['start'] + transcript['duration']) > current_part * duration_limit_in_sec:
-            print(f"Getting part number  : {current_part} ")
+            logging.debug(f"Getting part number  : {current_part} ")
             transcript_parts.append(current_transcript)
             current_transcript = text
             current_part += 1
@@ -109,7 +109,7 @@ def split_transcripts(transcripts, duration_limit_in_sec):
         else:
             current_transcript = ' '.join([current_transcript, text])
 
-    print(f"Getting part number  : {current_part} ")
+    logging.debug(f"Getting part number  : {current_part} ")
     transcript_parts.append(current_transcript)   
 
     return transcript_parts

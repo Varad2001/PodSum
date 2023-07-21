@@ -40,7 +40,7 @@ def get_all_podcasts(client):
 
 def insert_episodes_to_db(mongo_client, episodes:list):
 
-    logging.info(f"Inserting episodes to database....")
+    logging.info(f"Inserting new episodes to database....")
 
     try :
         db = mongo_client[env_var.DB_NAME]
@@ -57,7 +57,7 @@ def insert_episodes_to_db(mongo_client, episodes:list):
 
 def insert_podcast_info_to_db(mongo_client, podcast):
 
-    logging.info(f"Inserting the podcast to database : {podcast['podcast_url']}")
+    logging.debug(f"Inserting the podcast to database : {podcast['podcast_url']}")
     
     try :
         db = mongo_client[env_var.DB_NAME]
@@ -65,7 +65,8 @@ def insert_podcast_info_to_db(mongo_client, podcast):
 
         coll.insert_one(podcast)
 
-        logging.info(f"Successful.")
+        logging.debug(f"Successful.")
+        logging.info(f"Successfully inserted the new episodes to the database.")
         return True
     except Exception as e:
         logging.exception(e)
@@ -74,7 +75,7 @@ def insert_podcast_info_to_db(mongo_client, podcast):
 
 def update_podcast_info(mongo_client, pod_url, data):
 
-    logging.info(f"Updating podcast info for : {pod_url}")
+    logging.debug(f"Updating podcast info for : {pod_url}")
 
     try:
         db = mongo_client[env_var.DB_NAME]
@@ -85,7 +86,8 @@ def update_podcast_info(mongo_client, pod_url, data):
             {'$set' : {'episode_urls' : data}}
         )
 
-        logging.info("Success.")
+        logging.debug("Success.")
+        logging.info(f"Successfully updated the podcast info.")
         return True
     except Exception as e:
         logging.exception(e)
