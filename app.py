@@ -47,9 +47,7 @@ def check_fresh_episodes():
 
 
 def job():
-    url = f"{request.root_url}/test"
-    resp = requests.post(url)
-    print(resp.content)
+    pass
     
 
 def schedule_job():
