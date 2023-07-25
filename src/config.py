@@ -54,9 +54,7 @@ class EnvironmentVariables:
     MODELS_DIR = os.path.join(os.getcwd(), 'models')
 
     # mongodb database details
-    DB_NAME = "PODSUM"
-    POD_INFO_COLLECTION_NAME = "PODCAST_INFO"
-    POD_EPISODES_COLLECTION_NAME = "PODCAST_EPISODES"
+    DB_NAME = "podcasts.db"
 
     MAX_NEW_EPISODES = 5
 
@@ -65,6 +63,12 @@ class EnvironmentVariables:
     SPLIT_PART_DURATION = 70   # IN MINUTES
 
     LANGUAGES = ('en', 'en-US')
+
+    SENDER_EMAIL = "testingrecast@gmail.com"
+
+    SENDER_PASSWORD = "gxmjtehhqhdncolz"
+
+    RECEIVER_EMAIL = "vktesting4@gmail.com"
 
 
 env_var = EnvironmentVariables()

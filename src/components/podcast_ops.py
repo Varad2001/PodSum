@@ -22,6 +22,7 @@ def update_one_podcast(client, old_podcast, limit=env_var.MAX_NEW_EPISODES):
             
             tr = episode.get_transcript()
 
+
             if not tr:
                 msg = f"Encounted problem with {episode.episode_url}"
                 logging.info(msg)
@@ -39,16 +40,16 @@ def update_one_podcast(client, old_podcast, limit=env_var.MAX_NEW_EPISODES):
     if not new_videos_found:
         msg = f"{updated_podcast.name} : No new episodes found for podcast."
         logging.info(msg)
-        return 1, msg
+        return None, msg
 
     if db_ops.insert_episodes_to_db(client, results) and db_ops.update_podcast_info(client,updated_podcast.url, current_episode_urls) :
         msg = f"{updated_podcast.name} : {len(results)} new episodes saved successfully."
         logging.info(msg)
-        return 1, msg
+        return results, msg
     else :
         msg = f"{updated_podcast.name} :Failure"
         logging.info(msg)
-        return 0, msg
+        return None, msg
     
 
 def update_all_podcasts(client):
@@ -57,23 +58,31 @@ def update_all_podcasts(client):
     try:
         podcasts = db_ops.get_all_podcasts(client=client)
         if len(podcasts) == 0:
-            return 1, [f"No podcasts found in the database."]
+            return None, [f"No podcasts found in the database."]
     except Exception as e:
         logging.exception(e)
-        return 0, [f"Could not retrieve the podcasts details."]
+        return None, [f"Could not retrieve the podcasts details."]
     
     msg_logs = []
 
+    new_data = {'updated_info' : [], 'new_episodes' : []}
+
     for podcast in podcasts:
         try:
-            status, msg = update_one_podcast(client=client, old_podcast=podcast)
+            new_episodes, msg = update_one_podcast(client=client, old_podcast=podcast)
+            if new_episodes:
+                new_data['updated_info'].append({
+                    podcast['podcast_url'] : [episode['episode_url'] for episode in new_episodes]
+                })
+                new_data['new_episodes'] += new_episodes
+
         except Exception as e:
             logging.exception(e)
             msg = f"Could not update the podcast : {podcast['name']}"
 
         msg_logs.append(msg)
-    
-    return 1, msg_logs
+        
+    return new_data, msg_logs
 
 
 def add_podcast_to_db(client, url, limit=env_var.MAX_NEW_EPISODES):

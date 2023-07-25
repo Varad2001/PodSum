@@ -6,8 +6,6 @@ from bs4 import BeautifulSoup
 from pytube import YouTube
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api._errors import NoTranscriptFound, TranscriptsDisabled
-#from src.web_scraping import get_podcast_from_listennote
-#from src.audio_conversion import get_text_from_audio
 import src.utils as utils
 from src.logger import logging
 from src.config import env_var

@@ -8,6 +8,4 @@ pymongo
 pymongo[srv]
 scrapetube
 python-dotenv
-schedule
 gunicorn
-
