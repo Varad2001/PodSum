@@ -1,4 +1,6 @@
 import sqlite3
+from src.logger import logging
+
 
 class PodcastDB:
     def __init__(self, db_path: str):
@@ -12,6 +14,8 @@ class PodcastDB:
             None
         """
         self.db_path = db_path
+        self.create_table()
+
 
     def create_table(self):
         """
@@ -32,6 +36,8 @@ class PodcastDB:
                     episode_urls TEXT NOT NULL
                 )
             ''')
+        logging.info("Table 'podcasts' created if not exists.")
+
 
     def add_podcast(self, url: str, name: str, episode_urls: list):
         """
@@ -45,9 +51,14 @@ class PodcastDB:
         Returns:
             None
         """
-        with sqlite3.connect(self.db_path) as conn:
-            cursor = conn.cursor()
-            cursor.execute('INSERT INTO podcasts (url, name, episode_urls) VALUES (?, ?, ?)', (url, name, ','.join(episode_urls)))
+        if not self.get_podcast(url=url):
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.cursor()
+                cursor.execute('INSERT INTO podcasts (url, name, episode_urls) VALUES (?, ?, ?)', (url, name, ','.join(episode_urls)))
+                logging.info("Podcast added to the 'podcasts' table.")
+        else:
+            logging.warning("Podcast with the given URL already exists in the 'podcasts' table. Skipping insertion.")
+
 
     def get_podcast(self, url: str) -> tuple:
         """
@@ -64,6 +75,7 @@ class PodcastDB:
             cursor.execute('SELECT * FROM podcasts WHERE url = ?', (url,))
             return cursor.fetchone()
 
+
     def get_all_podcasts(self) -> list:
         """
         Get the details of all podcasts in the 'podcasts' table.
@@ -78,6 +90,7 @@ class PodcastDB:
             cursor = conn.cursor()
             cursor.execute('SELECT * FROM podcasts')
             return cursor.fetchall()
+
 
     def update_podcast(self, url: str, name: str, episode_urls: list):
         """
@@ -94,6 +107,8 @@ class PodcastDB:
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
             cursor.execute('UPDATE podcasts SET name = ?, episode_urls = ? WHERE url = ?', (name, ','.join(episode_urls), url))
+        logging.info("Podcast updated in the 'podcasts' table.")
+
 
     def delete_podcast(self, url: str):
         """
@@ -108,6 +123,7 @@ class PodcastDB:
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
             cursor.execute('DELETE FROM podcasts WHERE url = ?', (url,))
+        logging.info("Podcast deleted from the 'podcasts' table.")
 
 
 if __name__ == "__main__":

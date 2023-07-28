@@ -8,4 +8,6 @@ pymongo
 pymongo[srv]
 scrapetube
 python-dotenv
+flask
 gunicorn
+youtube_transcript_api

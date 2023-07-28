@@ -1,5 +1,4 @@
 import smtplib
-import json
 from bson import json_util
 from datetime import datetime
 from email.mime.multipart import MIMEMultipart
@@ -36,15 +35,3 @@ def send_email_with_json_attachment(sender_email, sender_password, receiver_emai
     except Exception as e:
         print(f"Error occurred: {e}")
 
-if __name__ == "__main__":
-    # Example usage:
-    sender_email = "testingrecast@gmail.com"  # Replace with your email address
-    sender_password = "gxmjtehhqhdncolz"  # Replace with your email password
-    receiver_email = "vktesting4@gmail.com"  # Replace with the recipient's email address
-    subject = "JSON Data Email with Attachment"
-    json_data = {
-        "name": "John Doe",
-        "age": 30,
-        "email": "john.doe@example.com"
-    }
-    send_email_with_json_attachment(sender_email, sender_password, receiver_email, subject, json_data, filename="data.json")

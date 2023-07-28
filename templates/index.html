@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Podcast Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+        }
+        h1 {
+            margin-bottom: 30px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .input-field {
+            display: none;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Podcast Management</h1>
+    <button id="add-podcast-btn">Add a New Podcast</button>
+    <div id="input-field-container" class="input-field">
+        <label for="podcast-url">Podcast URLs:</label>
+        <textarea id="podcast-url" name="podcast-url" required rows="5"></textarea>
+        <br>
+        <button id="submit-podcast-btn">Submit</button>
+    </div>
+    
+    <button id="see-podcasts-btn">See Available Podcasts</button>
+
+    <div id="responseMessage"></div>
+
+    <script>
+        document.getElementById("add-podcast-btn").addEventListener("click", function() {
+            var inputFieldContainer = document.getElementById("input-field-container");
+            inputFieldContainer.style.display = "block";
+        });
+
+        document.getElementById("submit-podcast-btn").addEventListener("click", function() {
+            // Get the value of the textarea
+            const podcastUrls = document.getElementById("podcast-url").value;
+
+            // Split the input value into an array of URLs based on new lines
+            const urlsArray = podcastUrls.split('\n');
+
+            fetch('/add_new_podcast', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 'podcast_urls': urlsArray })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display the response message from the server
+                const responseMessageDiv = document.getElementById("responseMessage");
+                responseMessageDiv.innerHTML = data.message;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+
+        document.getElementById("see-podcasts-btn").addEventListener("click", function() {
+            // Redirect to the see podcasts page (replace with your desired route)
+            window.location.href = "/see_podcasts";
+        });
+    </script>
+</body>
+</html>

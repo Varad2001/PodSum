@@ -1,3 +1,8 @@
+"""
+FOR FUTURE SCOPE : PODCASTS FROM LISTENNOTES CAN BE ADDED ALONG WITH YOUTUBE
+"""
+
+
 import os
 import requests
 from typing import Union, Optional, Tuple

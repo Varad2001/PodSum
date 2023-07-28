@@ -1,13 +1,10 @@
-# Podcast Summarizer
+# Podcast Monitor Project
 
-Podcast Summarizer is a Python project that allows you to extract and summarize the text content from podcasts. It supports podcasts from YouTube and Listen Notes platforms. The project utilizes web scraping, audio conversion, and natural language processing techniques to process the podcast audio files and generate a text summary.
+The Podcast Monitor project is a web application that allows users to monitor and keep track of their favorite podcasts. The application periodically checks for new episodes of podcasts and sends notifications to the user via email when new episodes are available. It also provides a user interface for adding new podcasts to monitor and viewing the available podcasts.
 
-## Features
+## How to Run the Project
 
-- Extracts audio from YouTube videos and Listen Notes podcasts.
-- Converts audio files to text using automatic speech recognition (ASR) using the Whisper ASR model.
-- Supports downloading the podcast audio files and saving them to the specified directory.
-- Summarizes the extracted text content using natural language processing techniques.
+To run the Podcast Monitor project, follow these steps:
 
 ## Installation
 
@@ -34,19 +31,66 @@ cd podcast-summarizer
 pip install -r requirements.txt
 ```
 
-## Usage
+## Update the settings
 
-1. Run the Streamlit app:
+1. Set up the necessary environment variables:
+   - Create a `.env` file in the project root directory.
+   - Add the following environment variables to the `.env` file:
+     - `SENDER_PASSWORD`: The password for the email account from which notifications will be sent.
 
-```
-streamlit run app.py
-```
-
-2. Open your web browser and navigate to http://localhost:8501 to access the Podcast Summarizer interface.
-
-3. Enter the podcast URL and click the "Extract Text" button to initiate the text extraction process. The extracted text will be displayed on the web interface.
+    -  Add the following environment variables to the `src/config.py` file:
+     - `DB_NAME`: The name of the SQLite database file to be used for storing podcast information (e.g., `podcasts.db`).
+     - `RECEIVER_EMAIL`: The email address where notifications will be sent.
 
 
-## Disclaimer
+2. Run the Flask application by executing `python app.py`.
+2. The Flask application will start, and you can access it by visiting `http://127.0.0.1:5000/` in your web browser.
 
-This project is intended for educational purposes only and is provided as-is. The web scraping functionality included in this project may violate the terms of service of the platforms from which the podcast content is scraped. This project does not promote or encourage any commercial or unauthorized use of the podcast content. The responsibility for complying with the terms of service and applicable laws rests with the user of this project.
+## Working of the Project
+
+The Podcast Monitor project has the following main functionalities:
+
+1. **Adding a New Podcast**: Users can add a new podcast to the monitoring list by entering the podcast URL and clicking the "Submit" button. The application will check if the podcast is already in the database and add it if it is not already present.
+
+2. **Checking for Fresh Episodes**: The application periodically checks for fresh episodes of the podcasts in the database. It retrieves the latest episodes of each podcast using the YouTube API and stores them in the database. If any new episodes are found, the application sends an email notification to the user with details of the new episodes.
+
+3. **Viewing Available Podcasts**: Users can view the list of available podcasts that are currently being monitored. The list displays the name of each podcast along with its URL.
+
+## API Routes and Their Working
+
+1. `/add_new_podcast` (POST):
+   - This route is used to add a new podcast to the database.
+   - Parameters:
+     - `podcast_urls` (list): The list of URLs of the podcasts to be added.
+   - Working:
+     - The route receives the `podcast_urls` parameter from the client's request.
+     - Then for each URL, :
+     - It checks if the podcast is already in the database using the `PodcastDBManager` class.
+     - If the podcast is not present, it adds the podcast to the database using the `add_new_podcast` method of the `PodcastDBManager` class.
+     - The route returns a JSON response with a success message if the podcast is added successfully, or a message indicating that the podcast is already available.
+
+2. `/get_available_podcasts` (GET):
+   - This route is used to retrieve the list of available podcasts from the database.
+   - Working:
+     - Fetches the list of available podcasts from the database using the `PodcastDB` class.
+     - It then extracts the podcast names from the database and returns those in json format.
+
+3. `/see_podcasts` (GET):
+   - This route is used to render the `see_podcasts.html` template and display the list of available podcasts to the user.
+   - Working:
+     - The route sends a GET request to the `/get_available_podcasts` route to fetch the list of available podcasts from the database.
+     - It extracts the podcast names from the JSON response and passes them to the `see_podcasts.html` template for rendering.
+
+4. `/check_fresh_episodes` (POST):
+   - This route is responsible for checking for fresh episodes of the podcasts in the database and sending email notifications to the user if new episodes are found.
+   - Working:
+     - The route receives a POST request from the client.
+     - It creates an instance of the `PodcastDBManager` class and retrieves all podcasts from the database using the `get_all_podcasts` method.
+     - For each podcast, it retrieves the latest episodes using the `get_fresh_episodes` method and checks if any new episodes are available.
+     - If new episodes are found, it sends an email notification to the user with details of the new episodes using the `send_email_to_user` function.
+     - If the email is sent successfully, it updates the database with the latest episode URLs using the `update_podcast` method of the `PodcastDB` class.
+
+## Conclusion
+
+The Podcast Monitor project provides an efficient and user-friendly way
+

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Podcasts</title>
+</head>
+<body>
+    <h1>Available Podcasts</h1>
+    <ul>
+        {% for podcast_name in podcast_names %}
+        <li>{{ podcast_name }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
