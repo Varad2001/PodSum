@@ -1,13 +1,12 @@
 flask
-streamlit
 BeautifulSoup4
 pytube
 ffmpeg-python
-youtube_transcript_api
-pymongo
-pymongo[srv]
 scrapetube
 python-dotenv
-flask
 gunicorn
 youtube_transcript_api
+openai
+langchain
+pymongo
+tiktoken

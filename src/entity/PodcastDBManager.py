@@ -60,6 +60,7 @@ class PodcastDBManager:
                 transcript = new_episode.get_transcript()
                 if not transcript or transcript == "NA":
                     continue
+                summary = new_episode.get_summary()
                 fresh_episodes.append(new_episode)
                 current_episode_urls.append(new_episode.episode_url)
 

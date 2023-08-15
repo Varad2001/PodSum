@@ -42,12 +42,16 @@ def check_fresh_episodes():
             # send the data to email
             if len(fresh_episodes) > 0 :
                 data = [episode.to_dict() for episode in fresh_episodes]
+                for episode in data:
+                    del episode['transcript']
+
                 new_episodes = {'new_episodes' : data}
                 # if data is sent successfully, update the database
-                if send_email_to_user(user_email=env_var.RECEIVER_EMAIL, json_data=new_episodes):
-                    for podcast, updated_urls in updated_podcasts.items():
-                        podcast_manager.db.update_podcast(podcast.url, podcast.name, updated_urls)
-                
+                if send_email_to_user(user_email=env_var.RECEIVER_EMAIL, json_data=new_episodes) :
+                    for updated_podcast in updated_podcasts:
+                        for podcast, updated_urls in updated_podcast.values():
+                            podcast_manager.db.update_podcast(podcast.url, podcast.name, updated_urls)
+                    
             else:
                 new_episodes = {'new_episodes' : None}
                 send_email_to_user(user_email=env_var.RECEIVER_EMAIL, json_data=new_episodes)

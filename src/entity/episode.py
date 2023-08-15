@@ -3,6 +3,7 @@ from typing import Optional
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api._errors import NoTranscriptFound, TranscriptsDisabled
 import src.utils as utils
+from src.components.summarizer import get_summary_from_openai
 from src.logger import logging
 from src.config import env_var
 
@@ -24,6 +25,8 @@ class Episode:
         self.episode_title = title
         self.podcast_name = podcast_name
         self.transcript = None
+        self.summary = None
+
 
     def to_dict(self):
         """
@@ -39,6 +42,7 @@ class Episode:
 
 
 class YoutubeEpisode(Episode):
+    
     def __init__(self, url: str, podcast_name: str, title: Optional[str] = None):
         """
         Initialize a YoutubeEpisode object.
@@ -52,6 +56,7 @@ class YoutubeEpisode(Episode):
             None
         """
         super().__init__(url=url, podcast_name=podcast_name, title=title)
+
 
     def get_transcript(self):
         """
@@ -88,3 +93,22 @@ class YoutubeEpisode(Episode):
             logging.exception(e)
             logging.info("Failed to retrieve transcripts.")
             return None
+        
+    
+    def get_summary(self):
+        
+        logging.debug(f"Getting summary for {self.episode_title}")
+        try :
+            transcript = " ".join(self.transcript)
+            summary = get_summary_from_openai(transcript)
+            self.summary = summary
+            
+            logging.debug(f"Getting summary successful.")
+            return self.summary
+        
+        except Exception as e:
+            logging.exception(e)
+            logging.info("Failed to retrieve summary.")
+            return None
+
+

@@ -15,7 +15,7 @@ class EnvironmentVariables:
 
     DB_PATH = os.path.join(DATABASE_DIR, DB_NAME)
 
-    MAX_NEW_EPISODES = 10
+    MAX_NEW_EPISODES = 1
 
     AVAILABLE_PLATFORMS = ['youtube']
 
@@ -23,7 +23,7 @@ class EnvironmentVariables:
 
     LANGUAGES = ('en', 'en-US')
 
-    RECEIVER_EMAIL = "vktesting4@gmail.com"
+    RECEIVER_EMAIL = "mike@mihfinancial.ca"
 
     SENDER_EMAIL = "testingrecast@gmail.com"
 
