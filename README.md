@@ -36,11 +36,13 @@ pip install -r requirements.txt
 1. Set up the necessary environment variables:
    - Create a `.env` file in the project root directory.
    - Add the following environment variables to the `.env` file:
+     - `OPENAI_API_KEY` : Api key for openai api
      - `SENDER_PASSWORD`: The password for the email account from which notifications will be sent.
 
     -  Add the following environment variables to the `src/config.py` file:
      - `DB_NAME`: The name of the SQLite database file to be used for storing podcast information (e.g., `podcasts.db`).
      - `RECEIVER_EMAIL`: The email address where notifications will be sent.
+     - `SENDER_EMAIL` : The email address which will be used to send the email.
 
 
 2. Run the Flask application by executing `python app.py`.
@@ -90,7 +92,4 @@ The Podcast Monitor project has the following main functionalities:
      - If new episodes are found, it sends an email notification to the user with details of the new episodes using the `send_email_to_user` function.
      - If the email is sent successfully, it updates the database with the latest episode URLs using the `update_podcast` method of the `PodcastDB` class.
 
-## Conclusion
-
-The Podcast Monitor project provides an efficient and user-friendly way
 
