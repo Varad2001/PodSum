@@ -43,7 +43,7 @@ def send_email_with_json_attachment(sender_email, sender_password, receiver_emai
             smtp_server.login(sender_email, sender_password)
             smtp_server.send_message(msg)
 
-        print("Email with JSON attachment sent successfully.")
+        print("Email sent successfully.")
     except Exception as e:
         print(f"Error occurred: {e}")
 

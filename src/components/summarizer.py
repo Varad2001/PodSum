@@ -5,7 +5,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.docstore.document import Document
 from langchain.llms.openai import OpenAI
 from langchain.chains.summarize import load_summarize_chain
-from src.logger import logging
+#from src.logger import logging
 
 
 def get_summary_from_openai(text):
@@ -22,6 +22,7 @@ def get_summary_from_openai(text):
 
         docs = [Document(page_content=t) for t in texts]
 
+        #print(f"Docs:\n{docs}")
         llm =  OpenAI()
         chain = load_summarize_chain(llm, chain_type="map_reduce")
 
@@ -29,5 +30,13 @@ def get_summary_from_openai(text):
 
         return output_summary
     except Exception as e:
-        logging.debug(f"Failed to get summary from openai : {str(e)}")
+        #logging.debug(f"Failed to get summary from openai : {str(e)}")
         return 
+    
+
+if __name__ == "__main__":
+    with open("data/text.txt", 'r') as f:
+        text = f.read()
+
+    summ = get_summary_from_openai(text)
+    print(summ)

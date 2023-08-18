@@ -23,9 +23,10 @@ class EnvironmentVariables:
 
     LANGUAGES = ('en', 'en-US')
 
-    RECEIVER_EMAIL = "mike@mihfinancial.ca"
+    #client email:  "mike@mihfinancial.ca"
+    RECEIVER_EMAIL = ""
 
-    SENDER_EMAIL = "testingrecast@gmail.com"
+    SENDER_EMAIL = ""
 
     SENDER_PASSWORD = os.environ.get("SENDER_PASSWORD")
 
