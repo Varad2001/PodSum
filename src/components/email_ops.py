@@ -111,19 +111,3 @@ def parse_data(json_data):
 
 
 
-if __name__ == "__main__":
-    data = {"new_episodes": [
-        {"episode_url": "https://www.youtube.com/watch?v=QDOk-RAHexg", "episode_title": "Legendary 85-Year-Old Physical Therapist Dr. Shirley Sahrmann Reveals Her Exercise Routine", "podcast_name": "timferriss", "summary": " The speaker, a PhD in neurobiology, shares their journey of learning about musculoskeletal issues, nutrition, and physical activity. They have a few funny stories along the way, such as realizing that their pants were backwards from doing a quadruped exercise, and needing to change their finger grips for bowling due to their hand movements. They discuss the importance of understanding femoral retroversion for activities such as deadlifts and golf, as well as the importance of physical therapy in understanding the connection between the backbone, pelvic bone, knee, and hip."},
-        {"episode_url": "https://www.youtube.com/watch?v=KPhd-Qua72E", "episode_title": "Legendary 85-Year-Old Physical Therapist Dr. Shirley Sahrmann Reveals Her Exercise Routine", "podcast_name": "timferriss", "summary": " The speaker, a PhD in neurobiology, shares their journey of learning about musculoskeletal issues, nutrition, and physical activity. They have a few funny stories along the way, such as realizing that their pants were backwards from doing a quadruped exercise, and needing to change their finger grips for bowling due to their hand movements. They discuss the importance of understanding femoral retroversion for activities such as deadlifts and golf, as well as the importance of physical therapy in understanding the connection between the backbone, pelvic bone, knee, and hip."}
-        
-        ]
-        }
-    
-    send_email_with_json_attachment(
-        sender_email= "testingrecast@gmail.com",
-        sender_password="vkcwuujfemmpmvdu",
-        receiver_email="vktesting4@gmail.com",
-        json_data=data
-    )
-
-
