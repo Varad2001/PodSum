@@ -121,23 +121,26 @@ def get_available_podcasts():
 @app.route('/see_podcasts', methods=['GET'])
 def see_podcasts():
     # Send a GET request to the '/get_available_podcasts' route on the same machine
-    response = requests.get(f'http://localhost:{PORT}/get_available_podcasts')
+    #response = requests.get(f'http://localhost:{PORT}/get_available_podcasts')
+    db : PodcastDB = PodcastDB(env_var.DB_PATH)
+    # Get the list of available podcasts from the database
+    available_podcasts = db.get_all_podcasts()
 
     # Check if the request was successful
-    if response.status_code == 200:
-        # Extract the JSON data from the response
-        response_data = response.json()
+    #if response.status_code == 200:
+    # Extract the JSON data from the response
+    #response_data = response.json()
 
-        # Process the JSON response to extract only the podcast names
-        podcast_names = [podcast[1] for podcast in response_data["podcasts"]]
+    # Process the JSON response to extract only the podcast names
+    podcast_names = [podcast[1] for podcast in available_podcasts]
 
-        # Render the "podcasts.html" template and pass the podcast_names to it
-        return render_template("see_podcasts.html", podcast_names=podcast_names)
-    elif response.status_code == 404:
-        return "No podcasts found in the database."
-    else:
+    # Render the "podcasts.html" template and pass the podcast_names to it
+    return render_template("see_podcasts.html", podcast_names=podcast_names)
+    #elif response.status_code == 404:
+    #    return "No podcasts found in the database."
+    #else:
         # If the request failed, return an error message
-        return "Error: Failed to retrieve available podcasts"
+    #    return "Error: Failed to retrieve available podcasts"
 
 
 def send_email_to_user(user_email, json_data):
