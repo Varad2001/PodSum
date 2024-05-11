@@ -160,4 +160,4 @@ def send_email_to_user(user_email, json_data):
 
 if __name__ == '__main__':
 
-    app.run(port=PORT)
+    app.run(port=PORT, debug=True)
