@@ -13,6 +13,7 @@ from src.config import env_var
 
 
 app = Flask(__name__)
+PORT = 10000
 
 
 @app.route("/")
@@ -120,7 +121,7 @@ def get_available_podcasts():
 @app.route('/see_podcasts', methods=['GET'])
 def see_podcasts():
     # Send a GET request to the '/get_available_podcasts' route on the same machine
-    response = requests.get('http://127.0.0.1:5000/get_available_podcasts')
+    response = requests.get(f'http://127.0.0.1:{PORT}/get_available_podcasts')
 
     # Check if the request was successful
     if response.status_code == 200:
@@ -159,4 +160,4 @@ def send_email_to_user(user_email, json_data):
 
 if __name__ == '__main__':
 
-    app.run(port=10000)
+    app.run(port=PORT)
