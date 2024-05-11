@@ -9,4 +9,3 @@ youtube_transcript_api
 openai
 langchain
 pymongo
-tiktoken
