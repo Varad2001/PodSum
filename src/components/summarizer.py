@@ -1,10 +1,10 @@
 import os
 from dotenv import load_dotenv
 import openai
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.docstore.document import Document
-from langchain.llms.openai import OpenAI
-from langchain.chains.summarize import load_summarize_chain
+#from langchain.text_splitter import RecursiveCharacterTextSplitter
+#from langchain.docstore.document import Document
+#from langchain.llms.openai import OpenAI
+#from langchain.chains.summarize import load_summarize_chain
 #from src.logger import logging
 
 
